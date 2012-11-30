@@ -1,0 +1,12 @@
+{application, vellus,
+ [
+  {description, "A stochastic erlang testing tool"},
+  {vsn, "0.1.0"},
+  {modules, [vellus, vellus_random]},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {env, []}
+ ]}.
