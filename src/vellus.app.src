@@ -1,7 +1,7 @@
 {application, vellus,
  [
   {description, "A stochastic erlang testing tool"},
-  {vsn, "0.1.0"},
+  {vsn, {cmd, "git describe --always --tags"}},
   {modules, [vellus, vellus_random]},
   {registered, []},
   {applications, [
