@@ -25,42 +25,34 @@ divide_test_() ->
      fun stop/1,
      {timeout, 180,
       [
-       ?_assert(fun() ->
-                        #check_failure{type=logical} =
-                            vellus:check({?MODULE, divide},
-                                         ?ARGS, fun is_integer/1,
-                                         [ fun divide_properties/1 ]
-                                        ),
-                        true
-                end()),
-       ?_assert(fun() ->
-                        #check_failure{type=exception} =
-                            vellus:check({?MODULE, divide},
-                                         ?ARGS, fun(_) -> erlang:throw(test) end,
-                                         [ fun divide_properties/1 ]
-                                        ),
-                        true
-                end()),
-       ?_assert(fun() ->
-                        #property_failure{type=logical} =
-                            vellus:check({?MODULE, divide},
-                                         ?ARGS, fun return_check/1,
-                                         [ fun(_) -> false end ]
-                                        ),
-                        true
-                end()),
-       ?_assert(fun() ->
-                        #property_failure{type=exception} =
-                            vellus:check({?MODULE, divide},
-                                         ?ARGS, fun return_check/1,
-                                         [ fun(_) -> erlang:throw(test) end ]
-                                        ),
-                        true
-                end()),
+       ?_assertMatch({vellus, check_failure, _},
+                     vellus:check({?MODULE, divide},
+                                  ?ARGS, fun is_integer/1,
+                                  [ fun divide_properties/1 ]
+                                 )
+                    ),
+       ?_assertException(throw, test,
+                         vellus:check({?MODULE, divide},
+                                      ?ARGS, fun(_) -> erlang:throw(test) end,
+                                      [ fun divide_properties/1 ]
+                                     )
+                         ),
+       ?_assertMatch({vellus, property_failure, _},
+                     vellus:check({?MODULE, divide},
+                                  ?ARGS, fun return_check/1,
+                                  [ fun(_) -> false end ]
+                                 )
+                    ),
+       ?_assertException(throw, test,
+                         vellus:check({?MODULE, divide},
+                                      ?ARGS, fun return_check/1,
+                                      [ fun(_) -> erlang:throw(test) end ]
+                                     )
+                        ),
        ?_assert(vellus:check({?MODULE, divide},
-                             ?ARGS, fun return_check/1,
-                             [ fun divide_properties/1 ]
-                            )),
+                                  ?ARGS, fun return_check/1,
+                                  [ fun divide_properties/1 ]
+                                 )),
        ?_assert(vellus:check({?MODULE, divide},
                              ?ARGS, fun return_check/1,
                              [ fun divide_properties/1 ],
