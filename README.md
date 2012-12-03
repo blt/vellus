@@ -60,7 +60,7 @@ integers:
 divide_test_() ->
     ArgumentGenerator = [fun vellus_random:pos_integer/0, fun vellus_random:pos_integer/0],
     ?_assert(vellus:check({?MODULE, divide}, ArgumentGenerator, fun return_check/1,
-                         [{properties, fun divide_properties/1}], 10000)).
+                         [ fun divide_properties/1 ], 10000)).
 ```
 
 That's that. Please see `test/` for more examples of vellus in action and read
